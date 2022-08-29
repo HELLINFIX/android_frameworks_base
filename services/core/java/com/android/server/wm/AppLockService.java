@@ -484,10 +484,9 @@ public class AppLockService extends SystemService {
 
     public void launchBeforeActivity(String packageName) {
         if (DEBUG_APPLOCK) Slog.v(TAG_APPLOCK, "launchBeforeActivity(" + packageName + ")");
-        final int delay = mForegroundApp == "android" ? 1000 : 0;
         AppLockContainer cont = getAppLockContainer(packageName);
         if (cont != null) {
-            DisplayThread.getHandler().postDelayed(() -> {
+            DisplayThread.getHandler().post(() -> {
                 mCurrent = cont;
                 if (mKeyguardShown) {
                     mLaunchAfterKeyguard = true;
@@ -501,7 +500,7 @@ public class AppLockService extends SystemService {
                     .setConfirmationRequired(false)
                     .build();
                 startBiometricPrompt();
-            }, delay);
+            });
         }
     }
 
